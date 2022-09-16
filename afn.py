@@ -8,3 +8,5 @@ class AFN(object):
 
     def construccionThompson(self):
         pass
+
+    
