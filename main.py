@@ -2,6 +2,10 @@
 #
 #
 
+from regex import *
+
 print("Bienvenido")
-regex = input("Ingresa la expresion para convertir: ")
-string = input("Ingresa la cadena para verficar: ")
+expresion = input("Ingresa la expresion para convertir: ")
+cadena = input("Ingresa la cadena para verficar: ")
+
+regex = Regex(expresion)
