@@ -6,9 +6,10 @@ class AFN(object):
         self.contador_estados = 0
         self.estados = []
         self.transiciones = []
-        self.inicio = []
-        self.aceptacion = []
+        self.estado_inicial = []
+        self.estados_aceptacion = []
         self.simbolos = []
+        self.estado_inicio = 0
         self.construccionThompson()
     
     #ARREGLAR STRING SOLO, ej: a
@@ -16,6 +17,7 @@ class AFN(object):
     def construccionThompson(self):
         stack_caracteres = []
         for caracter in self.regex_postfix:
+            print(stack_caracteres)
             if(caracter == "."):
                 self.concatenacion(stack_caracteres.pop(0))
             else:
@@ -23,7 +25,6 @@ class AFN(object):
 
     def concatenacion(self, exp):
         
-        self.contador_estados += 1
         self.estados.append(self.contador_estados)
         estado_inicial = self.contador_estados
 
@@ -34,3 +35,8 @@ class AFN(object):
         transicion = [estado_inicial, exp, estado_final]
         self.transiciones.append(transicion)
 
+    def union():
+        pass
+
+    def klenee():
+        pass
