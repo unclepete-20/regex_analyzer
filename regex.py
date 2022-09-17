@@ -35,8 +35,8 @@ class Regex(object):
         
     def postfixRegex(self):
         
-        operators = ['|', '?', '+', '*', '^']
-        bin = ['^', '|']
+        operators = ['|', '?', '+', '*']
+        bin = ['|']
         
         queue = ""
 
