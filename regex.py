@@ -3,7 +3,7 @@ class Regex(object):
     def __init__(self, regex):
         self.expresion = regex
         self.operatorStack = []
-        self.postfixExpression = self.postfixRegex()
+        self.postfixExpresion = self.postfixRegex()
     
     '''
     Se convertira la expresion normal a notacion postfix 
@@ -27,10 +27,8 @@ class Regex(object):
             return 4
         elif (char == '+'):
             return 4
-        elif (char == '^'):
-            return 5
         else:
-            return 6
+            return 5
         
         
     def postfixRegex(self):
