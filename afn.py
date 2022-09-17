@@ -1,6 +1,3 @@
-from typing_extensions import Self
-
-
 class AFN(object):
 
     def __init__(self, regex):
@@ -9,4 +6,5 @@ class AFN(object):
     def construccionThompson(self):
         pass
 
-    
+    def concatenacion(exp):
+        pass
