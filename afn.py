@@ -19,21 +19,26 @@ class AFN(object):
         for caracter in self.regex_postfix:
             print(stack_caracteres)
             if(caracter == "."):
-                self.concatenacion(stack_caracteres.pop(0))
+                self.concatenacion()
             else:
                 stack_caracteres.append(caracter)
 
-    def concatenacion(self, exp):
-        
-        self.estados.append(self.contador_estados)
+    def unidad_estados(self, conector):
+
+        if(estado_inicial != 0):
+            self.estados.append(self.contador_estados)
+
         estado_inicial = self.contador_estados
 
         self.contador_estados += 1
         self.estados.append(self.contador_estados)
         estado_final = self.contador_estados
 
-        transicion = [estado_inicial, exp, estado_final]
+        transicion = [estado_inicial, conector, estado_final]
         self.transiciones.append(transicion)
+
+    def concatenacion(self, exp_1, exp_2):
+        pass
 
     def union():
         pass
