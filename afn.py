@@ -18,6 +18,7 @@ class AFN(object):
         self.construccionThompson()
     
     #ARREGLAR STRING SOLO, ej: a
+    #Si se puede agregar caso para los dos ||
 
     def construccionThompson(self):
 
@@ -54,12 +55,32 @@ class AFN(object):
         caracter_1 = self.stack_caracteres.pop()
         caracter_2 = self.stack_caracteres.pop()
 
-        if(caracter_1 in ".|"):
-            pass
-        elif(caracter_2 in ".|"):
-            pass
-        elif(caracter_1 in ".|" and caracter_2 in ".|"):
-            pass
+        if(caracter_1 in ".|*"):
+
+            self.stack_caracteres.append(caracter_2)
+            self.stack_caracteres.append(caracter_1)
+
+            inicial_1, final_1 = self.construccionThompson()
+            
+            if(len(self.stack_caracteres) != 1):
+                inicial_2, final_2 = self.construccionThompson()
+            else:
+                caracter_nuevo = self.stack_caracteres.pop()
+                inicial_2, final_2 = self.unidad_estados(caracter_nuevo)
+
+            transicion = [final_1, "ε", inicial_2]
+            self.transiciones.append(transicion)
+
+        elif(caracter_2 in ".|*"):
+            
+            self.stack_caracteres.append(caracter_2)
+
+            inicial_1, final_1 = self.unidad_estados(caracter_1)
+            inicial_2, final_2 = self.construccionThompson()
+            
+            transicion = [final_1, "ε", inicial_2]
+            self.transiciones.append(transicion)
+
         else:
             inicial_1, final_1 = self.unidad_estados(caracter_1)
             inicial_2, final_2 = self.unidad_estados(caracter_2)
@@ -76,7 +97,7 @@ class AFN(object):
 
         print("caracteres: ", caracter_1, caracter_2)
 
-        if(caracter_1 in ".|"):
+        if(caracter_1 in ".|*"):
 
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
@@ -105,7 +126,7 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
-        elif(caracter_2 in ".|"):
+        elif(caracter_2 in ".|*"):
             
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
@@ -128,11 +149,7 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
-        elif(caracter_1 in ".|" and caracter_2 in ".|"):
-            pass
         else:
-            
-            print("Si entra")
 
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
@@ -158,8 +175,28 @@ class AFN(object):
     def klenee(self):
         caracter_1 = self.stack_caracteres.pop()
 
-        if(caracter_1 in ".|"):
-            pass
+        if(caracter_1 in ".|*"):
+            
+            self.contador_estados += 1
+            estado_transicion_1 = self.contador_estados
+
+            self.stack_caracteres.append(caracter_1)
+
+            inicial_1, final_1 = self.construccionThompson()
+
+            self.contador_estados += 1
+            estado_transicion_2 = self.contador_estados
+
+            transicion_1 = [final_1, "ε", inicial_1]
+            transicion_2 = [estado_transicion_1, "ε", inicial_1]
+            transicion_3 = [final_1, "ε", estado_transicion_2]
+            transicion_4 = [estado_transicion_1, "ε", estado_transicion_2]
+
+            self.transiciones.append(transicion_1)
+            self.transiciones.append(transicion_2)
+            self.transiciones.append(transicion_3)
+            self.transiciones.append(transicion_4)
+
         else:
 
             self.contador_estados += 1
