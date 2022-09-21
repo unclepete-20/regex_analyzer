@@ -110,8 +110,10 @@ class AFN(object):
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
 
+            self.stack_caracteres.append(caracter_2)
+
             inicial_1, final_1 = self.unidad_estados(caracter_1)
-            inicial_2, final_2 = self.unidad_estados(caracter_2)
+            inicial_2, final_2 = self.construccionThompson()
 
             self.contador_estados += 1
             estado_transicion_2 = self.contador_estados
