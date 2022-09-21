@@ -15,11 +15,23 @@ class AFN(object):
         self.simbolos = []
         self.estado_inicio = 0
         self.estado_final = 0
-        self.construccionThompson(self.stack_caracteres)
+        self.construccionThompson()
     
     #ARREGLAR STRING SOLO, ej: a
 
-    def construccionThompson(self, stack):
+    def construccionThompson(self):
+
+        while len(self.stack_caracteres) != 0:
+            caracter = self.stack_caracteres.pop()
+            
+            if(caracter == "."):
+                self.concatenacion()
+            elif(caracter == "|"):
+                self.union()
+            elif(caracter == "*"):
+                self.klenee()
+
+    def construccionThompson_Interna(self, stack):
 
         while len(stack) != 0:
             caracter = stack.pop()
@@ -28,6 +40,8 @@ class AFN(object):
                 self.concatenacion()
             elif(caracter == "|"):
                 self.union()
+            elif(caracter == "*"):
+                self.klenee()
                 
 
     def unidad_estados(self, conector):
@@ -94,5 +108,31 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
-    def klenee():
-        pass
+        return estado_transicion_1, estado_transicion_2
+
+    def klenee(self):
+        caracter_1 = self.stack_caracteres.pop()
+
+        if(caracter_1 in ".|"):
+            pass
+        else:
+
+            self.contador_estados += 1
+            estado_transicion_1 = self.contador_estados
+
+            inicial_1, final_1 = self.unidad_estados(caracter_1)
+
+            self.contador_estados += 1
+            estado_transicion_2 = self.contador_estados
+
+            transicion_1 = [final_1, "ε", inicial_1]
+            transicion_2 = [estado_transicion_1, "ε", inicial_1]
+            transicion_3 = [final_1, "ε", estado_transicion_2]
+            transicion_4 = [estado_transicion_1, "ε", estado_transicion_2]
+
+            self.transiciones.append(transicion_1)
+            self.transiciones.append(transicion_2)
+            self.transiciones.append(transicion_3)
+            self.transiciones.append(transicion_4)
+
+        return estado_transicion_1, estado_transicion_2
