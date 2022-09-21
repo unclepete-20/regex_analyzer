@@ -21,28 +21,19 @@ class AFN(object):
 
     def construccionThompson(self):
 
-        while len(self.stack_caracteres) != 0:
-            caracter = self.stack_caracteres.pop()
-            
-            if(caracter == "."):
-                self.concatenacion()
-            elif(caracter == "|"):
-                self.union()
-            elif(caracter == "*"):
-                self.klenee()
+        caracter = self.stack_caracteres.pop()
 
-    def construccionThompson_Interna(self, stack):
+        print(self.stack_caracteres)
 
-        while len(stack) != 0:
-            caracter = stack.pop()
-            
-            if(caracter == "."):
-                self.concatenacion()
-            elif(caracter == "|"):
-                self.union()
-            elif(caracter == "*"):
-                self.klenee()
-                
+        print("Caracter stack", caracter)
+        if(caracter == "."):
+            return self.concatenacion()
+        elif(caracter == "|"):
+            return self.union()
+        elif(caracter == "*"):
+            return self.klenee()
+
+
 
     def unidad_estados(self, conector):
 
@@ -74,6 +65,8 @@ class AFN(object):
             inicial_2, final_2 = self.unidad_estados(caracter_2)
             transicion = [final_1, "ε", inicial_2]
             self.transiciones.append(transicion)
+
+        return inicial_1, final_2
             
  
     def union(self):
@@ -81,13 +74,63 @@ class AFN(object):
         caracter_1 = self.stack_caracteres.pop()
         caracter_2 = self.stack_caracteres.pop()
 
+        print("caracteres: ", caracter_1, caracter_2)
+
         if(caracter_1 in ".|"):
-            pass
+
+            self.contador_estados += 1
+            estado_transicion_1 = self.contador_estados
+            
+            self.stack_caracteres.append(caracter_2)
+            self.stack_caracteres.append(caracter_1)
+
+            inicial_1, final_1 = self.construccionThompson()
+            
+            if(len(self.stack_caracteres) != 1):
+                inicial_2, final_2 = self.construccionThompson()
+            else:
+                caracter_nuevo = self.stack_caracteres.pop()
+                inicial_2, final_2 = self.unidad_estados(caracter_nuevo)
+
+            self.contador_estados += 1
+            estado_transicion_2 = self.contador_estados
+
+            transicion_1 = [estado_transicion_1, "ε", inicial_1]
+            transicion_2 = [estado_transicion_1, "ε", inicial_2]
+            transicion_3 = [final_1, "ε", estado_transicion_2]
+            transicion_4 = [final_2, "ε", estado_transicion_2]
+
+            self.transiciones.append(transicion_1)
+            self.transiciones.append(transicion_2)
+            self.transiciones.append(transicion_3)
+            self.transiciones.append(transicion_4)
+
         elif(caracter_2 in ".|"):
-            pass
+            
+            self.contador_estados += 1
+            estado_transicion_1 = self.contador_estados
+
+            inicial_1, final_1 = self.unidad_estados(caracter_1)
+            inicial_2, final_2 = self.unidad_estados(caracter_2)
+
+            self.contador_estados += 1
+            estado_transicion_2 = self.contador_estados
+
+            transicion_1 = [estado_transicion_1, "ε", inicial_1]
+            transicion_2 = [estado_transicion_1, "ε", inicial_2]
+            transicion_3 = [final_1, "ε", estado_transicion_2]
+            transicion_4 = [final_2, "ε", estado_transicion_2]
+
+            self.transiciones.append(transicion_1)
+            self.transiciones.append(transicion_2)
+            self.transiciones.append(transicion_3)
+            self.transiciones.append(transicion_4)
+
         elif(caracter_1 in ".|" and caracter_2 in ".|"):
             pass
         else:
+            
+            print("Si entra")
 
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
