@@ -1,9 +1,19 @@
+# -*-coding:utf-8 -*-
+'''
+@File    :   afd_directo.py
+@Date    :   2022/09/21
+@Author  :   Pedro Arriola (20188) y Oscar Lopez (20679)
+@Version :   1.0
+@Desc    :   Implementacion de construccion de AFD por el metodo directo
+'''
+
 from regex import *
 from Automata import Automata
 import uuid
 import shortuuid
 from timeit import default_timer as timer
 
+# DEFINICION DE ALFABETO PARA IDENTIFICAR NODOS Y ESTADOS DEL AUTOMATA
 shortuuid.set_alphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 
 class AFD_DIRECTO(Automata):
@@ -24,7 +34,7 @@ class AFD_DIRECTO(Automata):
         self.state_mapping = None
         
         
-        # instanciamos al objeto 
+        # instanciamos el objeto de tipo Automata para generar cierto nivel de herencia
         Automata.__init__(
             self, 
             symbols = nfa.symbols if nfa else syntax_tree.alfabeto,
@@ -67,6 +77,7 @@ class AFD_DIRECTO(Automata):
                     self.followpos[i] += node.firstpos
     
     
+    # Aplicacion del algoritmo para la construccion directa de un AFD apartir de un REGEX
     def directo(self):
         self.followpos_computation()
         
@@ -122,13 +133,16 @@ class AFD_DIRECTO(Automata):
         self.state_mapping = subset_mapping
         
         self.imprimir_automata("AFD DIRECTO", self.initial_state, self.terminal_states, self.states, self.symbols, self.transition_function, state_mapping=subset_mapping)
-        
+        self.archivo_txt("AFD DIRECTO", self.initial_state, self.terminal_states, self.states, self.symbols, self.transition_function, state_mapping=subset_mapping)
+    
+    # Simulacion de cadena ingresada por el usuario    
     def simulacion_cadena(self, cadena):
         inicio = timer()
         
         s = self.initial_state
         terminal = False
         
+        # Se verifica si pertenece a L(r) o no
         for char in cadena:
             if char not in self.symbols:
                 terminal = None

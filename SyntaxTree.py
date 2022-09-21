@@ -1,3 +1,12 @@
+# -*-coding:utf-8 -*-
+'''
+@File    :   SyntaxTree.py
+@Date    :   2022/09/21
+@Author  :   Pedro Arriola (20188) y Oscar Lopez (20679)
+@Version :   1.0
+@Desc    :   Implementacion de un arbol sintactico
+'''
+
 from Stack import *
 from Node import *
 import copy
@@ -46,7 +55,7 @@ class SyntaxTree(object):
                         else:
                             right = tree_stack.pop()
                         
-                            new = Node(char, right=right)
+                            new = Node(char, right = right)
                         
                             right.parent = new
                         
@@ -144,10 +153,3 @@ class SyntaxTree(object):
             self.print_tree(self.raiz)
             
         return ("")
-            
-    
-    def print_tree(self, node):
-        if node is not None:
-            print(node.data)
-            self.print_tree(node.left)
-            self.print_tree(node.right)

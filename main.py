@@ -1,3 +1,12 @@
+# -*-coding:utf-8 -*-
+'''
+@File    :   main.py
+@Date    :   2022/09/21
+@Author  :   Pedro Arriola (20188) y Oscar Lopez (20679)
+@Version :   1.0
+@Desc    :   Programa principal para ejecutar todas la funcionalidad implementadas
+'''
+
 #REGEX DE PRUEBA
 # (a|b)*abb
 #
@@ -7,7 +16,7 @@ from afn import *
 from afd_directo import *
 from SyntaxTree import *
 from progress.bar import ChargingBar
-import os, time, random
+import time, random
 
 print("\nBienvenido al ANALIZADOR LEXICO 9000\n")
 
@@ -15,7 +24,7 @@ print("\nBienvenido al ANALIZADOR LEXICO 9000\n")
 # cadena = input("Ingresa la cadena para verficar: ")
 
 expresion = '(a|b)*aab'
-w = 'bbbaab'
+w = 'bbbab'
 
 regex = Regex(expresion)
 #afn = AFN(regex)
@@ -41,18 +50,22 @@ bar2.finish()
 
 print('\n')
 
-hash_tree = SyntaxTree(extended_regex, directo = True)
-print('REGEX: ' + str(hash_tree.postfix))
+arbol_sintactico = SyntaxTree(extended_regex, directo = True)
+print('REGEX: ' + str(arbol_sintactico.postfix))
 
 
-nodos = hash_tree.traverse_postorder(hash_tree.raiz, full=True)
+nodos = arbol_sintactico.traverse_postorder(arbol_sintactico.raiz, full=True)
 
-
-afd_directo = AFD_DIRECTO(syntax_tree = hash_tree, directo = True, nodes = nodos)
+afd_directo = AFD_DIRECTO(syntax_tree = arbol_sintactico, directo = True, nodes = nodos)
 
 afd_directo.directo()
 
+print("\n[INFO] ARCHIVO TXT GENERADO\n")
+
 tiempo, result = afd_directo.simulacion_cadena(w)
+
+afd_directo.graficar(mapping = afd_directo.state_mapping)
+
 
 print('========> SIMULACION DE LA CADENA \'{0}\' EN AFD POR METODO DIRECTO <======== \n=> {1}\n=> {2} (ms)\n'.format(w, result, tiempo))
 

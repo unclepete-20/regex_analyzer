@@ -1,3 +1,12 @@
+# -*-coding:utf-8 -*-
+'''
+@File    :   regex.py
+@Date    :   2022/09/21
+@Author  :   Pedro Arriola (20188) y Oscar Lopez (20679)
+@Version :   1.0
+@Desc    :   Implementacion de caracteristicas de un Regex y funcionalidad Postfix
+'''
+
 class Regex(object):
 
     def __init__(self, regex):

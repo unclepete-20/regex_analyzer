@@ -1,3 +1,12 @@
+# -*-coding:utf-8 -*-
+'''
+@File    :   afn.py
+@Date    :   2022/09/21
+@Author  :   Pedro Arriola (20188) y Oscar Lopez (20679)
+@Version :   1.0
+@Desc    :   Implementacion de construccion de AFN por medio de Thompson, subconjuntos y AFN => AFD
+'''
+
 from typing import List
 
 
