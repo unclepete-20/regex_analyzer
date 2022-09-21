@@ -23,8 +23,8 @@ print("\nBienvenido al ANALIZADOR LEXICO 9000\n")
 # expresion = input("Ingresa la expresion para convertir: ")
 # cadena = input("Ingresa la cadena para verficar: ")
 
-expresion = '(a|b)*aab'
-w = 'bbbab'
+expresion = '(b|b)*abb(a|b)*'
+w = 'babbaaaaa'
 
 regex = Regex(expresion)
 #afn = AFN(regex)
@@ -64,7 +64,7 @@ print("\n[INFO] ARCHIVO TXT GENERADO\n")
 
 tiempo, result = afd_directo.simulacion_cadena(w)
 
-afd_directo.graficar(mapping = afd_directo.state_mapping)
+#afd_directo.graficar(mapping = afd_directo.state_mapping)
 
 
 print('========> SIMULACION DE LA CADENA \'{0}\' EN AFD POR METODO DIRECTO <======== \n=> {1}\n=> {2} (ms)\n'.format(w, result, tiempo))

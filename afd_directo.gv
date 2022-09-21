@@ -1,0 +1,20 @@
+digraph {
+	graph [rankdir=LR]
+	node [shape=circle]
+	BJ
+	node [shape=circle]
+	"4Z"
+	node [shape=circle]
+	36
+	node [shape=doublecircle]
+	"2O"
+	node [shape=none]
+	""
+	"" -> BJ
+	BJ -> "4Z" [label=a]
+	BJ -> BJ [label=b]
+	"4Z" -> 36 [label=b]
+	36 -> "2O" [label=b]
+	"2O" -> "2O" [label=a]
+	"2O" -> "2O" [label=b]
+}

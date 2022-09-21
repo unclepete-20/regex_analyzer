@@ -7,9 +7,6 @@
 @Desc    :   Implementacion de construccion de AFN por medio de Thompson, subconjuntos y AFN => AFD
 '''
 
-from typing import List
-
-
 class AFN(object):
 
     def __init__(self, regex):
@@ -19,12 +16,14 @@ class AFN(object):
         self.contador_estados = 0
         self.estados = []
         self.transiciones = []
+        self.transiciones_finales = []
         self.estado_inicial = []
         self.estados_aceptacion = []
         self.simbolos = []
         self.estado_inicio = 0
         self.estado_final = 0
         self.construccionThompson()
+        self.definir_Transiciones()
     
     #ARREGLAR STRING SOLO, ej: a
     #Si se puede agregar caso para los dos ||
@@ -33,9 +32,6 @@ class AFN(object):
 
         caracter = self.stack_caracteres.pop()
 
-        print(self.stack_caracteres)
-
-        print("Caracter stack", caracter)
         if(caracter == "."):
             return self.concatenacion()
         elif(caracter == "|"):
@@ -70,7 +66,7 @@ class AFN(object):
             self.stack_caracteres.append(caracter_1)
 
             inicial_1, final_1 = self.construccionThompson()
-            
+
             if(len(self.stack_caracteres) != 1):
                 inicial_2, final_2 = self.construccionThompson()
             else:
@@ -81,12 +77,12 @@ class AFN(object):
             self.transiciones.append(transicion)
 
         elif(caracter_2 in ".|*"):
-            
+
             self.stack_caracteres.append(caracter_2)
 
             inicial_1, final_1 = self.unidad_estados(caracter_1)
             inicial_2, final_2 = self.construccionThompson()
-            
+
             transicion = [final_1, "ε", inicial_2]
             self.transiciones.append(transicion)
 
@@ -104,26 +100,26 @@ class AFN(object):
         caracter_1 = self.stack_caracteres.pop()
         caracter_2 = self.stack_caracteres.pop()
 
-        print("caracteres: ", caracter_1, caracter_2)
-
         if(caracter_1 in ".|*"):
 
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
+            self.estados.append(self.contador_estados)
             
             self.stack_caracteres.append(caracter_2)
             self.stack_caracteres.append(caracter_1)
 
-            inicial_1, final_1 = self.construccionThompson()
-            
             if(len(self.stack_caracteres) != 1):
-                inicial_2, final_2 = self.construccionThompson()
+                inicial_1, final_1 = self.construccionThompson()
             else:
                 caracter_nuevo = self.stack_caracteres.pop()
-                inicial_2, final_2 = self.unidad_estados(caracter_nuevo)
+                inicial_1, final_1 = self.unidad_estados(caracter_nuevo)
+
+            inicial_2, final_2 = self.construccionThompson()
 
             self.contador_estados += 1
             estado_transicion_2 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
             transicion_1 = [estado_transicion_1, "ε", inicial_1]
             transicion_2 = [estado_transicion_1, "ε", inicial_2]
@@ -139,14 +135,16 @@ class AFN(object):
             
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
             self.stack_caracteres.append(caracter_2)
 
-            inicial_1, final_1 = self.unidad_estados(caracter_1)
-            inicial_2, final_2 = self.construccionThompson()
+            inicial_1, final_1 = self.construccionThompson()
+            inicial_2, final_2 = self.unidad_estados(caracter_1)
 
             self.contador_estados += 1
             estado_transicion_2 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
             transicion_1 = [estado_transicion_1, "ε", inicial_1]
             transicion_2 = [estado_transicion_1, "ε", inicial_2]
@@ -162,12 +160,14 @@ class AFN(object):
 
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
-            inicial_1, final_1 = self.unidad_estados(caracter_1)
-            inicial_2, final_2 = self.unidad_estados(caracter_2)
+            inicial_1, final_1 = self.unidad_estados(caracter_2)
+            inicial_2, final_2 = self.unidad_estados(caracter_1)
 
             self.contador_estados += 1
             estado_transicion_2 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
             transicion_1 = [estado_transicion_1, "ε", inicial_1]
             transicion_2 = [estado_transicion_1, "ε", inicial_2]
@@ -188,6 +188,7 @@ class AFN(object):
             
             self.contador_estados += 1
             estado_transicion_1 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
             self.stack_caracteres.append(caracter_1)
 
@@ -195,6 +196,7 @@ class AFN(object):
 
             self.contador_estados += 1
             estado_transicion_2 = self.contador_estados
+            self.estados.append(self.contador_estados)
 
             transicion_1 = [final_1, "ε", inicial_1]
             transicion_2 = [estado_transicion_1, "ε", inicial_1]
@@ -226,4 +228,13 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
-        return estado_transicion_1, estado_transicion_2
+        return estado_transicion_1, estado_transicion_1
+
+    def definir_Transiciones(self):
+
+        for transicion in self.transiciones:
+            elemento_1 = transicion[0]
+            elemento_2 = transicion[2]
+
+            transicion[0] = self.estados[len(self.estados) - elemento_2]
+            transicion[2] = self.estados[len(self.estados) - elemento_1]

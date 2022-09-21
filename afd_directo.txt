@@ -4,32 +4,30 @@ AFD DIRECTO CONSTRUIDO POR PEDRO ARRIOLA (20188) Y OSCAR LOPEZ (20679)
 DATOS: AFD DIRECTO
 
  -- CARACTERES DEL ALFABETO --
- => ['#', 'b', 'a']
+ => ['b', '#', 'a']
 
  -- ESTADO INICIAL --
- => 6Z
+ => B5
 
  -- ESTADOS DEL AUTOMATA --
       [1, 2, 3]
-      [1, 2, 3, 4]
-      [1, 2, 3, 4, 5]
-      [1, 2, 3, 6]
+      [4]
+      [5]
+      [8, 6, 7]
 
  -- ESTADOS DE ACEPTACION --
- => ['D1']
+ => ['BE']
 
  -- MAPPING --
-     (1, 2, 3) => 6Z
-     (1, 2, 3, 4) => 15
-     (1, 2, 3, 4, 5) => EJ
-     (1, 2, 3, 6) => D1
+     (1, 2, 3) => B5
+     (4,) => 7V
+     (5,) => 2J
+     (8, 6, 7) => BE
 
  -- TRANSICIONES --
-     ('6Z', 'b') => 6Z
-     ('6Z', 'a') => 15
-     ('15', 'b') => 6Z
-     ('15', 'a') => EJ
-     ('EJ', 'b') => D1
-     ('EJ', 'a') => EJ
-     ('D1', 'b') => 6Z
-     ('D1', 'a') => 15
+     ('B5', 'b') => B5
+     ('B5', 'a') => 7V
+     ('7V', 'b') => 2J
+     ('2J', 'b') => BE
+     ('BE', 'b') => BE
+     ('BE', 'a') => BE
