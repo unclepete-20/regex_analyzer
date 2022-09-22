@@ -9,6 +9,7 @@
 
 class AFN(object):
 
+    #Se inicializa la clase por medio de la expresion regular
     def __init__(self, regex):
         self.regex = regex
         self.regex_postfix = regex.postfixExpresion
@@ -21,23 +22,24 @@ class AFN(object):
         self.simbolos = []
         self.construccionThompson()
         self.definir_Transiciones()
-    
-    #ARREGLAR STRING SOLO, ej: a
-    #Si se puede agregar caso para los dos ||
 
+    #Se hace la funcion de Thompson
     def construccionThompson(self):
 
         caracter = self.stack_caracteres.pop()
 
+        #Dependiendo del caracter se realiza un procedimiento diferente debido a la construccion de cada uno
         if(caracter == "."):
             return self.concatenacion()
         elif(caracter == "|"):
             return self.union()
         elif(caracter == "*"):
             return self.klenee()
+        elif(len(self.stack_caracteres) == 0):
+            return self.unidad_estados(caracter)
 
 
-
+    #Funcion que crea estados, los cuales son unificados por un conector o caracter
     def unidad_estados(self, conector):
 
         if(conector not in self.simbolos):
@@ -56,10 +58,13 @@ class AFN(object):
 
         return estado_inicial, estado_final
 
+    #Funcion que realiza la concatenacion
     def concatenacion(self):
+
         caracter_1 = self.stack_caracteres.pop()
         caracter_2 = self.stack_caracteres.pop()
 
+        #Si la se encuentra en la expresion alguno de los operadores se realiza la recursion de la funcion de construccion
         if(caracter_1 in ".|*"):
 
             self.stack_caracteres.append(caracter_2)
@@ -73,9 +78,11 @@ class AFN(object):
                 caracter_nuevo = self.stack_caracteres.pop()
                 inicial_2, final_2 = self.unidad_estados(caracter_nuevo)
 
+            #Se realizan las transiciones de los estados iniciales y finales con respecto a las contrucciones que se realizaron recursivamente
             transicion = [final_1, "ε", inicial_2]
             self.transiciones.append(transicion)
 
+        #Se verifica nuevamente
         elif(caracter_2 in ".|*"):
 
             self.stack_caracteres.append(caracter_2)
@@ -83,23 +90,27 @@ class AFN(object):
             inicial_1, final_1 = self.unidad_estados(caracter_1)
             inicial_2, final_2 = self.construccionThompson()
 
+            #Se realiza la transicion
             transicion = [final_1, "ε", inicial_2]
             self.transiciones.append(transicion)
 
+        #Para casos simples se realiza esta opcion
         else:
             inicial_1, final_1 = self.unidad_estados(caracter_1)
             inicial_2, final_2 = self.unidad_estados(caracter_2)
             transicion = [final_1, "ε", inicial_2]
             self.transiciones.append(transicion)
 
+        #Se regresan los estados final e inicial de la construccion, esto para la recursion
         return inicial_1, final_2
             
- 
+    #Funcion de la union
     def union(self):
 
         caracter_1 = self.stack_caracteres.pop()
         caracter_2 = self.stack_caracteres.pop()
 
+        #Si la se encuentra en la expresion alguno de los operadores se realiza la recursion de la funcion de construccion
         if(caracter_1 in ".|*"):
 
             self.contador_estados += 1
@@ -121,6 +132,7 @@ class AFN(object):
             estado_transicion_2 = self.contador_estados
             self.estados.append(self.contador_estados)
 
+            #Se realizan las transiciones de los estados iniciales y finales con respecto a las contrucciones que se realizaron recursivamente
             transicion_1 = [estado_transicion_1, "ε", inicial_1]
             transicion_2 = [estado_transicion_1, "ε", inicial_2]
             transicion_3 = [final_1, "ε", estado_transicion_2]
@@ -179,11 +191,16 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
+        #Se regresan los estados final e inicial de la construccion, esto para la recursion
         return estado_transicion_1, estado_transicion_2
 
+    #Funcion de Klenee que realiza las operaciones unarias
     def klenee(self):
+
+        #Se llama solo a un caracter
         caracter_1 = self.stack_caracteres.pop()
 
+        #Se realiza la recursividad si se encuentra un operador
         if(caracter_1 in ".|*"):
             
             self.contador_estados += 1
@@ -243,6 +260,7 @@ class AFN(object):
             transicion[2] = self.estados[len(self.estados) - elemento_1]
 
     def simulacion(self, cadena):
+
         contador = 0
         estados = self.e_closure(self.estado_inicial)
         while(contador < len(cadena)):
@@ -257,22 +275,32 @@ class AFN(object):
             return "Cadena No Aceptada"
     
     def convertir_afd(self):
+
         estados_afd = ["E0"]
         d_estados = [self.e_closure(self.estado_inicial)]
         transiciones_afd = []
+        estado_inicial_afd = [d_estados[0]]
+        estado_final_afd = [d_estados[len(d_estados) - 1]]
         contador = 0
         while(contador != len(d_estados)):
             for simbolo in self.simbolos:
                 nuevo_estado = self.e_closure(self.move(d_estados[contador], simbolo))
                 if(nuevo_estado not in d_estados):
                     d_estados.append(nuevo_estado)
-                    estados_afd.append("E"+str(len(estados_afd)))
                     transiciones_afd.append([estados_afd[contador], simbolo, "E"+str(len(estados_afd))])
+                    estados_afd.append("E"+str(len(estados_afd)))
                 else:
                     transiciones_afd.append([estados_afd[contador], simbolo, estados_afd[contador]])
+            contador += 1
+
+        print("\nEstados AFD")
+        print(estados_afd)
+        
+        print("\nTransiciones:")
         print(transiciones_afd)
         
 
+        return estados_afd, transiciones_afd, estado_final_afd, estado_inicial_afd
 
     def e_closure(self, estados):
 
@@ -302,3 +330,21 @@ class AFN(object):
                         stack_estados.append(i[2])
 
         return resultado
+
+    def archivo_txt(self, nombre, simbolos, estado_inicial, estados, estados_aceptacion, transiciones):
+        with open(nombre,"w", encoding="utf-8") as file:
+            file.write("\nAFD DIRECTO CONSTRUIDO POR PEDRO ARRIOLA (20188) Y OSCAR LOPEZ (20679)\n")
+            file.write("\n -- CARACTERES DEL ALFABETO --\n")
+            file.write(" => " + str(simbolos) + "\n")
+            file.write("\n -- ESTADO INICIAL --\n")
+            file.write(" => " + str(estado_inicial) + "\n")
+            file.write("\n -- ESTADOS DEL AUTOMATA --\n")
+            for state in estados:
+                file.write("      " + str(state) + "\n")
+            file.write("\n -- ESTADOS DE ACEPTACION --\n")
+            file.write(" => " + str(estados_aceptacion) + "\n")
+            file.write("\n -- TRANSICIONES --\n")
+            for i in transiciones:
+                transicion = str(i[0]) + "=> " + i[1] + " => " + str(i[2]) + "\n"
+                file.write(transicion)
+            file.close()

@@ -4,14 +4,10 @@ AFD DIRECTO CONSTRUIDO POR PEDRO ARRIOLA (20188) Y OSCAR LOPEZ (20679)
 DATOS: AFD DIRECTO
 
  -- CARACTERES DEL ALFABETO --
- => ['b', '#', 'a']
+ => ['a', '#', 'b']
 
  -- ESTADO INICIAL --
-<<<<<<< HEAD
- => 35
-=======
- => CS
->>>>>>> 30361badc3bb3170bd8ed1d53f770c558f831a4d
+ => C0
 
  -- ESTADOS DEL AUTOMATA --
       [1, 2, 3]
@@ -20,36 +16,18 @@ DATOS: AFD DIRECTO
       [8, 6, 7]
 
  -- ESTADOS DE ACEPTACION --
-<<<<<<< HEAD
- => ['E7']
+ => ['1H']
 
  -- MAPPING --
-     (1, 2, 3) => 35
-     (4,) => E6
-     (5,) => 43
-     (8, 6, 7) => E7
+     (1, 2, 3) => C0
+     (4,) => 0O
+     (5,) => AF
+     (8, 6, 7) => 1H
 
  -- TRANSICIONES --
-     ('35', 'b') => 35
-     ('35', 'a') => E6
-     ('E6', 'b') => 43
-     ('43', 'b') => E7
-     ('E7', 'b') => E7
-     ('E7', 'a') => E7
-=======
- => ['7W']
-
- -- MAPPING --
-     (1, 2, 3) => CS
-     (4,) => 8K
-     (5,) => 8B
-     (8, 6, 7) => 7W
-
- -- TRANSICIONES --
-     ('CS', 'b') => CS
-     ('CS', 'a') => 8K
-     ('8K', 'b') => 8B
-     ('8B', 'b') => 7W
-     ('7W', 'b') => 7W
-     ('7W', 'a') => 7W
->>>>>>> 30361badc3bb3170bd8ed1d53f770c558f831a4d
+     ('C0', 'a') => 0O
+     ('C0', 'b') => C0
+     ('0O', 'b') => AF
+     ('AF', 'b') => 1H
+     ('1H', 'a') => 1H
+     ('1H', 'b') => 1H

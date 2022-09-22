@@ -20,18 +20,22 @@ import time, random
 
 print("\nBienvenido al ANALIZADOR LEXICO 9000\n")
 
-# expresion = input("Ingresa la expresion para convertir: ")
-# cadena = input("Ingresa la cadena para verficar: ")
-
 expresion = '(b|b)*abb(a|b)*'
 w = 'babbaaaaa'
 
+#CONSTRUCCION DE AFN
 regex = Regex(expresion)
 
 afn = AFN(regex)
-print(afn.transiciones)
-print(afn.simulacion(w))
-afn.convertir_afd()
+print("Transiciones")
+afn.archivo_txt("afn.txt", afn.simbolos, afn.estado_inicial, afn.estados, afn.estados_aceptacion, afn.transiciones)
+
+print("\nSimulacion de la cadena")
+print(afn.simulacion(w) + "\n")
+
+print("Conversion de AFN a AFD")
+afd_estados, afd_transiciones, afd_final, afd_inicial = afn.convertir_afd()
+afn.archivo_txt("afd_de_afn.txt", afn.simbolos, afd_inicial, afd_estados, afd_final, afd_transiciones)
 
 # CONSTRUCCION AFD DIRECTO
 print('\n========> CONSTRUCCION AFD DIRECTO <========\n')
@@ -61,8 +65,7 @@ print("\n[INFO] ARCHIVO TXT GENERADO\n")
 
 tiempo, result = afd_directo.simulacion_cadena(w)
 
-afd_directo.graficar(mapping = afd_directo.state_mapping)
+#afd_directo.graficar(mapping = afd_directo.state_mapping)
 
 
 print('========> SIMULACION DE LA CADENA \'{0}\' EN AFD POR METODO DIRECTO <======== \n=> {1}\n=> {2} (ms)\n'.format(w, result, tiempo))
-

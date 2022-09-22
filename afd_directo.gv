@@ -1,0 +1,20 @@
+digraph {
+	graph [rankdir=LR]
+	node [shape=circle]
+	11
+	node [shape=circle]
+	"3F"
+	node [shape=circle]
+	76
+	node [shape=doublecircle]
+	"1R"
+	node [shape=none]
+	""
+	"" -> 11
+	11 -> "3F" [label=a]
+	11 -> 11 [label=b]
+	"3F" -> 76 [label=b]
+	76 -> "1R" [label=b]
+	"1R" -> "1R" [label=a]
+	"1R" -> "1R" [label=b]
+}

@@ -1,0 +1,39 @@
+
+AFD DIRECTO CONSTRUIDO POR PEDRO ARRIOLA (20188) Y OSCAR LOPEZ (20679)
+
+ -- CARACTERES DEL ALFABETO --
+ => ['a', 'b']
+
+ -- ESTADO INICIAL --
+ => [[1, 2, 8, 9, 5, 3]]
+
+ -- ESTADOS DEL AUTOMATA --
+      E0
+      E1
+      E2
+      E3
+      E4
+      E5
+      E6
+      E7
+
+ -- ESTADOS DE ACEPTACION --
+ => [[1, 2, 8, 9, 5, 3]]
+
+ -- TRANSICIONES --
+E0=> a => E1
+E0=> b => E2
+E1=> a => E3
+E1=> b => E4
+E2=> a => E2
+E2=> b => E2
+E3=> a => E3
+E3=> b => E3
+E4=> a => E4
+E4=> b => E5
+E5=> a => E6
+E5=> b => E7
+E6=> a => E6
+E6=> b => E6
+E7=> a => E7
+E7=> b => E7
