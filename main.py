@@ -64,7 +64,7 @@ print("\n[INFO] ARCHIVO TXT GENERADO\n")
 
 tiempo, result = afd_directo.simulacion_cadena(w)
 
-#afd_directo.graficar(mapping = afd_directo.state_mapping)
+afd_directo.graficar(mapping = afd_directo.state_mapping)
 
 
 print('========> SIMULACION DE LA CADENA \'{0}\' EN AFD POR METODO DIRECTO <======== \n=> {1}\n=> {2} (ms)\n'.format(w, result, tiempo))

@@ -1,0 +1,15 @@
+MÓDULOS QUE SE DEBEN INSTALAR:
+
+pip install progress
+
+pip install graphviz
+
+pip install shortuuid
+
+Instalación de graphviz:
+
+1. Ir al siguiente link: https://graphviz.org/download/
+2. Seleccionar la opcion graphviz-6.0.1 (64-bit) EXE installer [sha256]
+3. Ejecutar el instalador.
+4. En la configuración se debe seleccionar la opción de agregar al PATH del sistema para insertarlo en las variables del sistema.
+5. Listo, ya se puede ejecutar graphviz para observar graficamente los automatas.
