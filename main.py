@@ -34,7 +34,7 @@ print(regex.postfixExpresion)
 
 afn = AFN(regex)
 print(afn.transiciones)
-
+afn.simulacion(w)
 
 # CONSTRUCCION AFD DIRECTO
 print('\n========> CONSTRUCCION AFD DIRECTO <========\n')

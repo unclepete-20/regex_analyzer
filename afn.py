@@ -16,12 +16,9 @@ class AFN(object):
         self.contador_estados = 0
         self.estados = []
         self.transiciones = []
-        self.transiciones_finales = []
         self.estado_inicial = []
         self.estados_aceptacion = []
         self.simbolos = []
-        self.estado_inicio = 0
-        self.estado_final = 0
         self.construccionThompson()
         self.definir_Transiciones()
     
@@ -232,9 +229,54 @@ class AFN(object):
 
     def definir_Transiciones(self):
 
+        print(self.transiciones)
+
+        self.estado_inicial.append(1)
+        self.estados_aceptacion.append(self.contador_estados)
+
         for transicion in self.transiciones:
             elemento_1 = transicion[0]
             elemento_2 = transicion[2]
 
             transicion[0] = self.estados[len(self.estados) - elemento_2]
             transicion[2] = self.estados[len(self.estados) - elemento_1]
+
+    def simulacion(self, cadena):
+        contador = 0
+        estados = self.e_closure(self.estado_inicial)
+        while(contador < len(cadena)):
+            caracter = cadena[contador]
+            print(caracter)
+            estados = self.e_closure(self.move(estados, caracter))
+            print(estados)
+            contador += 1
+
+
+    def e_closure(self, estados):
+
+        stack_estados = list(estados)
+        resultado = list(estados)
+        while(len(stack_estados) != 0):
+            estado = stack_estados.pop()
+            for i in self.transiciones:
+                if(i[0] == estado and i[1] == "ε"):
+                    if(i[2] not in resultado):
+                        resultado.append(i[2])
+                        stack_estados.append(i[2])
+        
+        return resultado
+
+    def move(self, estados, caracter):
+
+        stack_estados = list(estados)
+        resultado = []
+
+        while(len(stack_estados) != 0):
+            estado = stack_estados.pop()
+            for i in self.transiciones:
+                if(i[0] == estado and i[1] == caracter):
+                    if(i[2] not in resultado):
+                        resultado.append(i[2])
+                        stack_estados.append(i[2])
+
+        return resultado
