@@ -7,7 +7,11 @@ DATOS: AFD DIRECTO
  => ['b', '#', 'a']
 
  -- ESTADO INICIAL --
+<<<<<<< HEAD
  => 35
+=======
+ => CS
+>>>>>>> 30361badc3bb3170bd8ed1d53f770c558f831a4d
 
  -- ESTADOS DEL AUTOMATA --
       [1, 2, 3]
@@ -16,6 +20,7 @@ DATOS: AFD DIRECTO
       [8, 6, 7]
 
  -- ESTADOS DE ACEPTACION --
+<<<<<<< HEAD
  => ['E7']
 
  -- MAPPING --
@@ -31,3 +36,20 @@ DATOS: AFD DIRECTO
      ('43', 'b') => E7
      ('E7', 'b') => E7
      ('E7', 'a') => E7
+=======
+ => ['7W']
+
+ -- MAPPING --
+     (1, 2, 3) => CS
+     (4,) => 8K
+     (5,) => 8B
+     (8, 6, 7) => 7W
+
+ -- TRANSICIONES --
+     ('CS', 'b') => CS
+     ('CS', 'a') => 8K
+     ('8K', 'b') => 8B
+     ('8B', 'b') => 7W
+     ('7W', 'b') => 7W
+     ('7W', 'a') => 7W
+>>>>>>> 30361badc3bb3170bd8ed1d53f770c558f831a4d
