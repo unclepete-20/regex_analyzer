@@ -27,14 +27,11 @@ expresion = '(b|b)*abb(a|b)*'
 w = 'babbaaaaa'
 
 regex = Regex(expresion)
-#afn = AFN(regex)
-#print(afn.transiciones)
-
-print(regex.postfixExpresion)
 
 afn = AFN(regex)
 print(afn.transiciones)
-afn.simulacion(w)
+print(afn.simulacion(w))
+afn.convertir_afd()
 
 # CONSTRUCCION AFD DIRECTO
 print('\n========> CONSTRUCCION AFD DIRECTO <========\n')

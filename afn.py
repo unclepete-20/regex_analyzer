@@ -40,6 +40,9 @@ class AFN(object):
 
     def unidad_estados(self, conector):
 
+        if(conector not in self.simbolos):
+            self.simbolos.append(conector)
+
         self.contador_estados += 1
         self.estados.append(self.contador_estados)
         estado_inicial = self.contador_estados
@@ -225,11 +228,9 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
-        return estado_transicion_1, estado_transicion_1
+        return estado_transicion_1, estado_transicion_2
 
     def definir_Transiciones(self):
-
-        print(self.transiciones)
 
         self.estado_inicial.append(1)
         self.estados_aceptacion.append(self.contador_estados)
@@ -246,10 +247,31 @@ class AFN(object):
         estados = self.e_closure(self.estado_inicial)
         while(contador < len(cadena)):
             caracter = cadena[contador]
-            print(caracter)
             estados = self.e_closure(self.move(estados, caracter))
-            print(estados)
             contador += 1
+        set_estados = set(estados)
+        set_finales = set(self.estados_aceptacion)
+        if(set_estados.intersection(set_finales).__len__() != 0):
+            return "Cadena Aceptada"
+        else:
+            return "Cadena No Aceptada"
+    
+    def convertir_afd(self):
+        estados_afd = ["E0"]
+        d_estados = [self.e_closure(self.estado_inicial)]
+        transiciones_afd = []
+        contador = 0
+        while(contador != len(d_estados)):
+            for simbolo in self.simbolos:
+                nuevo_estado = self.e_closure(self.move(d_estados[contador], simbolo))
+                if(nuevo_estado not in d_estados):
+                    d_estados.append(nuevo_estado)
+                    estados_afd.append("E"+str(len(estados_afd)))
+                    transiciones_afd.append([estados_afd[contador], simbolo, "E"+str(len(estados_afd))])
+                else:
+                    transiciones_afd.append([estados_afd[contador], simbolo, estados_afd[contador]])
+        print(transiciones_afd)
+        
 
 
     def e_closure(self, estados):
