@@ -7,7 +7,7 @@ DATOS: AFD DIRECTO
  => ['a', '#', 'b']
 
  -- ESTADO INICIAL --
- => C0
+ => 5B
 
  -- ESTADOS DEL AUTOMATA --
       [1, 2, 3]
@@ -16,18 +16,18 @@ DATOS: AFD DIRECTO
       [8, 6, 7]
 
  -- ESTADOS DE ACEPTACION --
- => ['1H']
+ => ['4Y']
 
  -- MAPPING --
-     (1, 2, 3) => C0
-     (4,) => 0O
-     (5,) => AF
-     (8, 6, 7) => 1H
+     (1, 2, 3) => 5B
+     (4,) => 7G
+     (5,) => AB
+     (8, 6, 7) => 4Y
 
  -- TRANSICIONES --
-     ('C0', 'a') => 0O
-     ('C0', 'b') => C0
-     ('0O', 'b') => AF
-     ('AF', 'b') => 1H
-     ('1H', 'a') => 1H
-     ('1H', 'b') => 1H
+     ('5B', 'a') => 7G
+     ('5B', 'b') => 5B
+     ('7G', 'b') => AB
+     ('AB', 'b') => 4Y
+     ('4Y', 'a') => 4Y
+     ('4Y', 'b') => 4Y

@@ -214,7 +214,8 @@ class AFN(object):
             self.contador_estados += 1
             estado_transicion_2 = self.contador_estados
             self.estados.append(self.contador_estados)
-
+            
+            #Se realizan todas las transiciones siguiendo la forma de la construccion
             transicion_1 = [final_1, "ε", inicial_1]
             transicion_2 = [estado_transicion_1, "ε", inicial_1]
             transicion_3 = [final_1, "ε", estado_transicion_2]
@@ -245,8 +246,11 @@ class AFN(object):
             self.transiciones.append(transicion_3)
             self.transiciones.append(transicion_4)
 
+        #Se retornan los estados final e inicial para la recursividad
         return estado_transicion_1, estado_transicion_2
 
+    #Con esta funcion se da "vuelta" a las transiciones debido a que los estados van a N a 1
+    #Con esto se consigue que los estados vayan de 1 a N
     def definir_Transiciones(self):
 
         self.estado_inicial.append(1)
@@ -258,9 +262,11 @@ class AFN(object):
 
             transicion[0] = self.estados[len(self.estados) - elemento_2]
             transicion[2] = self.estados[len(self.estados) - elemento_1]
-
+    
+    #Se realiza la simulacion mediante el algoritmo
     def simulacion(self, cadena):
 
+        #Se realiza el algoritmo visto en clase utilizando e-closure y move
         contador = 0
         estados = self.e_closure(self.estado_inicial)
         while(contador < len(cadena)):
@@ -274,8 +280,10 @@ class AFN(object):
         else:
             return "Cadena No Aceptada"
     
+    #Se realiza la conversion del afn a afd mediante el algoritmo
     def convertir_afd(self):
 
+        #Se utiliza el algoritmo visto en clase con e-closure y move
         estados_afd = ["E0"]
         d_estados = [self.e_closure(self.estado_inicial)]
         transiciones_afd = []
@@ -291,17 +299,11 @@ class AFN(object):
                     estados_afd.append("E"+str(len(estados_afd)))
                 else:
                     transiciones_afd.append([estados_afd[contador], simbolo, estados_afd[contador]])
-            contador += 1
-
-        print("\nEstados AFD")
-        print(estados_afd)
-        
-        print("\nTransiciones:")
-        print(transiciones_afd)
-        
+            contador += 1     
 
         return estados_afd, transiciones_afd, estado_final_afd, estado_inicial_afd
 
+    #Se realiza la funcion e-closure con el algoritmo visto
     def e_closure(self, estados):
 
         stack_estados = list(estados)
@@ -316,6 +318,7 @@ class AFN(object):
         
         return resultado
 
+    #Se regresa la funcion de move con el mismo algoritmo de e-closure, en este caso buscando un caracter
     def move(self, estados, caracter):
 
         stack_estados = list(estados)
@@ -331,6 +334,7 @@ class AFN(object):
 
         return resultado
 
+    #Se realiza un archivo txt
     def archivo_txt(self, nombre, simbolos, estado_inicial, estados, estados_aceptacion, transiciones):
         with open(nombre,"w", encoding="utf-8") as file:
             file.write("\nAFD DIRECTO CONSTRUIDO POR PEDRO ARRIOLA (20188) Y OSCAR LOPEZ (20679)\n")
